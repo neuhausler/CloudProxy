@@ -1,0 +1,18 @@
+%%-*- mode: erlang -*-
+{application, cloudproxy,
+ [
+  {description, "cloudproxy"},
+  {vsn, "1"},
+  {modules, []},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib,
+                  inets,
+                  crypto,
+                  mochiweb,
+                  webmachine
+                 ]},
+  {mod, { cloudproxy_app, []}},
+  {env, []}
+ ]}.
