@@ -1,0 +1,6 @@
+
+.project
+
+ebin/
+priv/log/
+deps/
