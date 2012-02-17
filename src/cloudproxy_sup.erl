@@ -71,7 +71,7 @@ init([]) ->
 		{port, Port},
 		{log_dir, LogDir},
 		{dispatch, Dispatch},
-		{error_handler, cloudrover_error_handler}
+		{error_handler, cloudproxy_error_handler}
 	],
 
 	WebServer =

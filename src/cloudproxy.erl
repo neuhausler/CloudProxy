@@ -36,6 +36,7 @@ start_link() ->
 	ensure_started(mochiweb),
 	application:set_env(webmachine, webmachine_logger_module, webmachine_logger),
     ensure_started(webmachine),
+    ensure_started(ibrowse),
     cloudproxy_sup:start_link().
 
 %% @spec start() -> ok
@@ -46,12 +47,14 @@ start() ->
 	ensure_started(mochiweb),
 	application:set_env(webmachine, webmachine_logger_module, webmachine_logger),
 	ensure_started(webmachine),
+    ensure_started(ibrowse),
 	application:start(cloudproxy).
 
 %% @spec stop() -> ok
 %% @doc Stop the cloudproxy server.
 stop() ->
 	Res = application:stop(cloudproxy),
+    application:stop(ibrowse),
 	application:stop(webmachine),
 	application:stop(mochiweb),
 	application:stop(crypto),

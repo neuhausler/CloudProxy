@@ -1,4 +1,3 @@
-%%-*- mode: erlang -*-
 %% @author Marcel Neuhausler
 %% @copyright 2012 Marcel Neuhausler
 %%
@@ -14,8 +13,13 @@
 %%    See the License for the specific language governing permissions and
 %%    limitations under the License.
 
-%% Show default page
-{[], cloudproxy_default_resource, []}.
+-module(cloudproxy_default_resource).
+-export([init/1, to_html/2]).
 
-%% Reverse Proxy CouchDB Requests
-{["couch",'*'], cloudproxy_couchdb_resource, {"http://localhost:8050/couch/", "http://localhost:5984/"}}.
+-include_lib("webmachine/include/webmachine.hrl").
+
+init([]) ->
+	{ok, nostate}.
+
+to_html(ReqData, Context) ->
+	{"<html><head><title>CloudProxy</title></head><body>Hello!</body></html>", ReqData, Context}.
