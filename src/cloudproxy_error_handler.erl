@@ -27,7 +27,7 @@ render_error(Code, Req, Reason) ->
 
 render_error_body(404, Req, _Reason) ->
 	{ok, ReqState} = Req:add_response_header("Content-Type", "text/html"),
-	{<<"<html><head><title>404 Not Found</title></head><body><h1>Not Found</h1>The requested document was not found on this server.<p><hr><address>CloudRover</address></body></html>">>, ReqState};
+	{<<"<html><head><title>404 Not Found</title></head><body><h1>Not Found</h1>The requested document was not found on this server.<p><hr><address>CloudProxy</address></body></html>">>, ReqState};
 
 render_error_body(500, Req, Reason) ->
 	{ok, ReqState} = Req:add_response_header("Content-Type", "text/html"),
@@ -39,7 +39,7 @@ render_error_body(500, Req, Reason) ->
 			%% interrupted by network failure.
 			ok;
 		_ ->
-			error_logger:error_msg("cloudrover error: path=~p~n~p~n", [Path, Reason])
+			error_logger:error_msg("cloudproxy error: path=~p~n~p~n", [Path, Reason])
 	end,
 	STString = io_lib:format("~p", [Reason]),
 	ErrorStart = "<html><head><title>500 Internal Server Error</title></head><body><h1>Internal Server Error</h1>The server encountered an error while processing this request:<br><pre>",
@@ -55,7 +55,7 @@ render_error_body(501, Req, _Reason) ->
 		"<html><head><title>501 Not Implemented</title>"
 		"</head><body><h1>Internal Server Error</h1>"
 		"The server does not support the ~p method.<br>"
-		"<p><hr><address>CloudRover"
+		"<p><hr><address>CloudProxy"
 		"</address></body></html>",
 	[Method]),
 	{erlang:iolist_to_binary(ErrorStr), ReqState};
@@ -69,7 +69,7 @@ render_error_body(503, Req, _Reason) ->
 		"The server is currently unable to handle "
 		"the request due to a temporary overloading "
 		"or maintenance of the server.<br>"
-		"<p><hr><address>CloudRover"
+		"<p><hr><address>CloudProxy"
 		"</address></body></html>",
 		{list_to_binary(ErrorStr), ReqState}.
 
