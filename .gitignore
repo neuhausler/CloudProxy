@@ -4,3 +4,4 @@
 ebin/
 priv/log/
 deps/
+var/cloudproxy.pid
