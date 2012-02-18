@@ -4,4 +4,4 @@
 ebin/
 priv/log/
 deps/
-var/cloudproxy.pid
+priv/var/cloudproxy.pid

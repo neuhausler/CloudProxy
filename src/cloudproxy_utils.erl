@@ -31,23 +31,20 @@
 %% ibrowse will recalculate Host and Content-Length headers,
 %% and will muck them up if they're manually specified
 clean_request_headers(Headers) ->
-    [{K,V} || {K,V} <- Headers,
-              K /= 'Host', K /= 'Content-Length'].
+	[{K,V} || {K,V} <- Headers, K /= 'Host', K /= 'Content-Length'].
 
 %% webmachine expresses method as all-caps string or atom,
 %% while ibrowse uses all-lowercase atom
 wm_to_ibrowse_method(Method) when is_list(Method) ->
-    list_to_atom(string:to_lower(Method));
+	list_to_atom(string:to_lower(Method));
 wm_to_ibrowse_method(Method) when is_atom(Method) ->
-    wm_to_ibrowse_method(atom_to_list(Method)).
+	wm_to_ibrowse_method(atom_to_list(Method)).
 
-%% couchdb returns a fully-qualified URI in Location -
-%% hack off the couch host, and drop in this proxy host
+%% correct location header
 fix_location([], _) -> [];
-fix_location([{"Location", CouchDataPath}|Rest],
-             {ExternalPath, CouchPath}) ->
-    DataPath = lists:nthtail(length(CouchPath), CouchDataPath),
-    [{"Location", ExternalPath++DataPath}|Rest];
+fix_location([{"Location", DataPathIn}|Rest], {ExternalPath, PathIn}) ->
+	DataPath = lists:nthtail(length(PathIn), DataPathIn),
+	[{"Location", ExternalPath++DataPath}|Rest];
 fix_location([H|T], C) ->
-    [H|fix_location(T, C)].
+	[H|fix_location(T, C)].
 
