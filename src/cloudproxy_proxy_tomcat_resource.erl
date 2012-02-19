@@ -33,7 +33,6 @@ service_available(RequestData, Context={_ExternalPath, TomcatPath}) ->
 		[
 			TomcatPath,
 			wrq:disp_path(RequestData),
-			"/",
 			case wrq:req_qs(RequestData) of
 				[] -> [];
 				Qs -> [$?|mochiweb_util:urlencode(Qs)]
@@ -45,8 +44,7 @@ service_available(RequestData, Context={_ExternalPath, TomcatPath}) ->
 		Body -> Body
 	end,
 
-
-case ibrowse:send_req(Path, Headers, Method, ReqBody) of
+	case ibrowse:send_req(Path, Headers, Method, ReqBody) of
 		{ok, Status, CouchHeaders, RespBody} ->
 			RespHeaders = cloudproxy_utils:fix_location(CouchHeaders, Context),
 			{{halt, list_to_integer(Status)}, wrq:set_resp_headers(RespHeaders, wrq:set_resp_body(RespBody, RequestData)), Context};
