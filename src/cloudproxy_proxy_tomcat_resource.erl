@@ -33,6 +33,7 @@ service_available(RequestData, Context={_ExternalPath, TomcatPath}) ->
 		[
 			TomcatPath,
 			wrq:disp_path(RequestData),
+			"/",
 			case wrq:req_qs(RequestData) of
 				[] -> [];
 				Qs -> [$?|mochiweb_util:urlencode(Qs)]
