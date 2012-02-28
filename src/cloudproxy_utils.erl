@@ -21,7 +21,8 @@
 	[
 		clean_request_headers/1,
 		wm_to_ibrowse_method/1,
-		fix_location/2
+		fix_location/2,
+		send_attack_vector/3
 	]).
 
 %%
@@ -48,3 +49,10 @@ fix_location([{"Location", DataPathIn}|Rest], {ExternalPath, PathIn}) ->
 fix_location([H|T], C) ->
 	[H|fix_location(T, C)].
 
+%% send attackvector to gatewat
+send_attack_vector(Type, Message, IPAddress) ->
+	ibrowse:send_req(
+		"http://localhost:8080/InfoNodeAttackVectorGateway/",
+		[{"Content-Type","application/json"}],
+		post,
+		mochijson:encode({struct, [{type, Type},{where, "CloudProxy"},{message, Message},{ipaddress, IPAddress}]})).

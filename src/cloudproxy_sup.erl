@@ -56,11 +56,11 @@ upgrade() ->
 %% @spec init([]) -> SupervisorTree
 %% @doc supervisor callback.
 init([]) ->
-	{ok, Dispatch} = file:consult(filename:join([filename:dirname(code:which(?MODULE)), "..", "priv", "dispatch.conf"])),
-	{ok, Config}   = file:consult(filename:join([filename:dirname(code:which(?MODULE)), "..", "priv", "cloudproxy.conf"])),
-	{ok, Port}     = get_option(port, Config),
-	{ok, LogDir}   = get_option(log_dir, Config),
-	{ok, PidFile}  = get_option(pid_file, Config),
+	{ok, Dispatch}     = file:consult(filename:join([filename:dirname(code:which(?MODULE)), "..", "priv", "dispatch.conf"])),
+	{ok, Config}       = file:consult(filename:join([filename:dirname(code:which(?MODULE)), "..", "priv", "cloudproxy.conf"])),
+	{ok, Port}         = get_option(port, Config),
+	{ok, LogDir}       = get_option(log_dir, Config),
+	{ok, PidFile}      = get_option(pid_file, Config),
 
 	filelib:ensure_dir(LogDir),
 
@@ -81,7 +81,7 @@ init([]) ->
 		permanent,
 		5000,
 		worker,
-		[mochiweb_socket_server, cloudrover_stateserver]
+		[mochiweb_socket_server]
 	},
 
 	Processes = [WebServer],
