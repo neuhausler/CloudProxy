@@ -3,8 +3,8 @@
 	[
 		{description, "cloudproxy"},
 		{vsn, "1"},
-		{modules, []},
-		{registered, []},
+		{modules, [cloudproxy_sup, cloudproxy_stateserver]},
+		{registered, [cloudproxy_sup]},
 		{applications, [
 			kernel,
 			stdlib,

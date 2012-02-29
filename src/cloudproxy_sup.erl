@@ -61,6 +61,8 @@ init([]) ->
 	{ok, Port}         = get_option(port, Config),
 	{ok, LogDir}       = get_option(log_dir, Config),
 	{ok, PidFile}      = get_option(pid_file, Config),
+	{ok, LogAttack}    = get_option(log_attack, Config),
+	{ok, AttackGateway}= get_option(attack_gateway, Config),
 
 	filelib:ensure_dir(LogDir),
 
@@ -74,6 +76,21 @@ init([]) ->
 		{error_handler, cloudproxy_error_handler}
 	],
 
+	StateServerConfig = [
+		{log_attack,     LogAttack},
+		{attack_gateway, AttackGateway}
+	], 
+
+	StateServer =
+	{
+		cloudproxy_stateserver,
+		{cloudproxy_stateserver, start, [StateServerConfig]},
+		permanent,
+		5000,
+		worker,
+		[]
+	},
+	
 	WebServer =
 	{
 		webmachine_mochiweb,
@@ -81,10 +98,10 @@ init([]) ->
 		permanent,
 		5000,
 		worker,
-		[mochiweb_socket_server]
+		[mochiweb_socket_server, cloudproxy_stateserver]
 	},
 
-	Processes = [WebServer],
+	Processes = [WebServer, StateServer],
 	{ok, { {one_for_all, 10, 10}, Processes} }.
 
 

@@ -52,7 +52,7 @@ fix_location([H|T], C) ->
 %% send attackvector to gatewat
 send_attack_vector(Type, Message, IPAddress) ->
 	ibrowse:send_req(
-		"http://localhost:8080/InfoNodeAttackVectorGateway/",
+		cloudproxy_stateserver:getAttackGateway(),
 		[{"Content-Type","application/json"}],
 		post,
 		mochijson:encode({struct, [{type, Type},{where, "CloudProxy"},{message, Message},{ipaddress, IPAddress}]})).
