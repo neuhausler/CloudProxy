@@ -26,9 +26,14 @@ render_error(Code, Req, Reason) ->
 	end.
 
 render_error_body(404, Req, _Reason) ->
-	{Path,_} = Req:raw_path(),
-	{Peer,_} = Req:peer(),
-	cloudproxy_utils:send_attack_vector("404", Path, Peer),
+	case cloudproxy_stateserver:logForAttackTurnedOn() of
+		true ->
+			{Path,_} = Req:raw_path(),
+			{Peer,_} = Req:peer(),
+			cloudproxy_utils:send_attack_vector("404", Path, Peer);
+		false ->
+			doNothing
+	end,
 	{ok, ReqState} = Req:add_response_header("Content-Type", "text/html"),
 	{<<"<html><head><title>404 Not Found</title></head><body><h1>Not Found</h1>The requested document was not found on this server.<p><hr><address>CloudProxy</address></body></html>">>, ReqState};
 
