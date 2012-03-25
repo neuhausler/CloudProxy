@@ -46,9 +46,9 @@ service_available(RequestData, Context={_ExternalPath, TomcatPath}) ->
 	end,
 
 	case ibrowse:send_req(Path, Headers, Method, ReqBody) of
-		{ok, Status, CouchHeaders, RespBody} ->
-			RespHeaders = cloudproxy_utils:fix_location(CouchHeaders, Context),
-			{{halt, list_to_integer(Status)}, wrq:set_resp_headers(RespHeaders, wrq:set_resp_body(RespBody, RequestData)), Context};
+		{ok, Status, RespHeaders, RespBody} ->
+			RespHeadersFixed = cloudproxy_utils:fix_headers(RespHeaders, Context, []),
+			{{halt, list_to_integer(Status)}, wrq:set_resp_headers(RespHeadersFixed, wrq:set_resp_body(RespBody, RequestData)), Context};
 		_Otherwise ->
 			{false, RequestData, Context}
     end.

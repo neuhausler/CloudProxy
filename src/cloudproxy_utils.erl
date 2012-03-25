@@ -21,8 +21,8 @@
 	[
 		clean_request_headers/1,
 		wm_to_ibrowse_method/1,
-		fix_location/2,
-		send_attack_vector/3
+		fix_headers/3,
+		send_attack_vector/4
 	]).
 
 %%
@@ -41,18 +41,21 @@ wm_to_ibrowse_method(Method) when is_list(Method) ->
 wm_to_ibrowse_method(Method) when is_atom(Method) ->
 	wm_to_ibrowse_method(atom_to_list(Method)).
 
-%% correct location header
-fix_location([], _) -> [];
-fix_location([{"Location", DataPathIn}|Rest], {ExternalPath, PathIn}) ->
+%% correct headers (location, chunked)
+fix_headers([], _, Result) ->
+	Result;
+fix_headers([{"Location", DataPathIn}|T], {ExternalPath, PathIn}, Result) ->
 	DataPath = lists:nthtail(length(PathIn), DataPathIn),
-	[{"Location", ExternalPath++DataPath}|Rest];
-fix_location([H|T], C) ->
-	[H|fix_location(T, C)].
+	fix_headers(T, {}, [{"Location", ExternalPath++DataPath}|Result]);
+fix_headers([{"Transfer-Encoding", _}|T], C, Result) ->
+	fix_headers(T, C, Result);
+fix_headers([H|T], C, Result) ->
+	fix_headers(T, C, [H|Result]).
 
-%% send attackvector to gatewat
-send_attack_vector(Type, Message, IPAddress) ->
+%% send attackvector to gateway
+send_attack_vector(Type, Message, IPAddress, UserAgent) ->
 	ibrowse:send_req(
 		cloudproxy_stateserver:getAttackGateway(),
 		[{"Content-Type","application/json"}],
 		post,
-		mochijson:encode({struct, [{type, Type},{where, "CloudProxy"},{message, Message},{ipaddress, IPAddress}]})).
+		mochijson:encode({struct, [{type, Type},{where, "CloudProxy"},{message, Message},{ipaddress, IPAddress},{useragent, UserAgent}]})).

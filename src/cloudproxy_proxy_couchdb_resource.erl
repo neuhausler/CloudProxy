@@ -55,7 +55,7 @@ service_available(RP, C={_ExternalPath, CouchPath}) ->
 
     case ibrowse:send_req(Path, Headers, Method, ReqBody) of
         {ok, Status, CouchHeaders, RespBody} ->
-            RespHeaders = cloudproxy_utils:fix_location(CouchHeaders, C),
+            RespHeaders = cloudproxy_utils:fix_headers(CouchHeaders, C, []),
 
             %% stop resource processing here and return whatever
             %% couchdb wanted to return

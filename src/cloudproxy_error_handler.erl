@@ -28,9 +28,10 @@ render_error(Code, Req, Reason) ->
 render_error_body(404, Req, _Reason) ->
 	case cloudproxy_stateserver:logForAttackTurnedOn() of
 		true ->
-			{Path,_} = Req:raw_path(),
-			{Peer,_} = Req:peer(),
-			cloudproxy_utils:send_attack_vector("404", Path, Peer);
+			{Path,_}   = Req:raw_path(),
+			{Peer,_}   = Req:peer(),
+			{Agent, _} = Req:get_req_header("User-Agent"),
+			cloudproxy_utils:send_attack_vector("404", Path, Peer, Agent);
 		false ->
 			doNothing
 	end,
