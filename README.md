@@ -1,8 +1,10 @@
 # CloudProxy
 
-CloudProxy serves as a very simple Reverse Proxy forwarding requests to Tomcat and CouchDB.
-Using CloudProxy makes Tomcat and CouchDB and potential other internal services accessible via port 80 (http).
-Can be used to make services running on Amazon EC2 accessible for applications running on Google AppEngine, which restricts outside calls to port 80.
+CloudProxy serves as a very simple Reverse Proxy listening on port 80 (http). It is forwarding requests to Tomcat, CouchDB and potentially other internal services.
+
+Some use-cases:
+* Make services running on Amazon EC2 accessible for applications running on Google AppEngine. Google restricts outside requests to only port 80.
+* Single, "managed" entry point to services running in EC2.
 
 
 ## Development
