@@ -6,7 +6,7 @@ CloudProxy serves as a very simple reverse proxy, listening on port 80 (http). I
 
 Some use-cases:
 
- * Make services running on Amazon EC2 accessible for applications running on Google AppEngine. Google restricts outside requests to port 80.
+ * Make services running on Amazon EC2 accessible for applications running on Google AppEngine. Outgoing requests are restricted to port 80.
  * As a single, "managed" entry point to services running in EC2.
 
 CloudProxy is written in Erlang based on [webmachine] (https://github.com/basho/webmachine) and [ibrowse](https://github.com/cmullaparthi/ibrowse/).
@@ -31,7 +31,7 @@ CloudProxy by default is listening on port 8050. Configuration for Port, interna
 
 To change port from 8050 to 80:
 
-`./priv/dispatch.conf`
+Edit `./priv/dispatch.conf`
 
 ```
 %% Reverse Proxy CouchDB Requests
@@ -42,7 +42,7 @@ To change port from 8050 to 80:
 ```
 
 
-`./priv/cloudproxy.conf`
+Edit `./priv/cloudproxy.conf`
 
 ```
 {port, 80}.
@@ -50,7 +50,7 @@ To change port from 8050 to 80:
 
 A server can be configured to track 404 "attacks" (work in progress)
 
-`./priv/cloudproxy.conf`
+Edit `./priv/cloudproxy.conf`
 
 ```
 {log_attack,      true}.                                  %% Enable 404 attacks to get forwarded to the AttackGateway
@@ -65,6 +65,7 @@ A server can be configured to track 404 "attacks" (work in progress)
 ```
 
 Access to CouchDB: http://localhost/proxy/couch/
+
 Access to Tomcat:  http://localhost/proxy/tomcat/
 
 
