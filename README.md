@@ -18,15 +18,17 @@ Influenced by a [example code](https://bitbucket.org/bryan/wmexamples/) for webm
 CloudProxy requires Erlang R14B03.
 
 Build:
+
 ```bash
 git clone git://github.com/neuhausler/CloudRover.git
 cd CloudRover
 make
-```bash
+```
 
 Configure:
 
 Run:
 ```bash
 ./start.sh
-```bash
+```
+
