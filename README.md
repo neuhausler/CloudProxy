@@ -17,7 +17,7 @@ Influenced by a [example code](https://bitbucket.org/bryan/wmexamples/) for webm
 
 CloudProxy requires Erlang R14B03.
 
-Build:
+*Build:*
 
 ```
 git clone git://github.com/neuhausler/CloudRover.git
@@ -25,9 +25,9 @@ cd CloudRover
 make
 ```
 
-Configure:
+*Configure:*
 
-CloudProxy by default is listening on port 8050. Port, internal, and external URL can be configured in dispatch.conf and cloudproxy.com.
+CloudProxy by default is listening on port 8050. Configuration for Port, internal and external URL can be modified in dispatch.conf and cloudproxy.conf.
 
 To change port from 8050 to 80:
 
@@ -48,23 +48,24 @@ To change port from 8050 to 80:
 {port, 80}.
 ```
 
-An external server can be configure to track 404 "attacks":
+A server can be configured to track 404 "attacks" (work in progress)
 
 `./priv/cloudproxy.conf`
 
 ```
-{port, 80}.
+{log_attack,      true}.                                  %% Enable 404 attacks to get forwarded to the AttackGateway
+{attack_gateway, "http://localhost:8080/URLForGateway"}.  %% Gateway to log 404 attacks
 ```
 
 
-Run:
+*Run:*
 
 ```
 ./start.sh
 ```
 
-Access to CouchDB: `http://localhost/proxy/couch/`
+Access to CouchDB: http://localhost/proxy/couch/
+Access to Tomcat:  http://localhost/proxy/tomcat/
 
-Access to Tomcat: `http://localhost/proxy/tomcat/`
 
 
