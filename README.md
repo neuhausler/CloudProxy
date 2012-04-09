@@ -2,12 +2,12 @@
 
 ## Overview
 
-CloudProxy serves as a very simple reverse proxy, listening on port 80 (http). It is forwarding incoming requests to either Tomcat, CouchDB, or potentially other internal services.
+CloudProxy serves as a very simple reverse proxy, listening on port 80 (http). It is forwarding incoming requests to either Tomcat, CouchDB, or other internal services.
 
 Some use-cases:
 
- * Make services running on Amazon EC2 accessible for applications running on Google AppEngine. Outgoing requests are restricted to port 80.
- * As a single, "managed" entry point to services running in EC2.
+ * Access services running on Amazon EC2 from applications running on Google AppEngine. Requests from AppEngine are restricted to port 80.
+ * Single and "managed" entry point to services running in EC2 or any other IaaS.
 
 CloudProxy is written in Erlang based on [webmachine] (https://github.com/basho/webmachine) and [ibrowse](https://github.com/cmullaparthi/ibrowse/).
 Influenced by a [example code](https://bitbucket.org/bryan/wmexamples/) for webmachine from Bryan Fink. 
