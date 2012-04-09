@@ -15,9 +15,9 @@ Influenced by a [example code](https://bitbucket.org/bryan/wmexamples/) for webm
 
 ## Quick Start
 
-CloudProxy requires Erlang R14B03.
+CloudProxy was developed and tested using Erlang R14B03.
 
-*Build:*
+**Build:**
 
 ```
 git clone git://github.com/neuhausler/CloudRover.git
@@ -25,7 +25,7 @@ cd CloudRover
 make
 ```
 
-*Configure:*
+**Configure:**
 
 CloudProxy by default is listening on port 8050. Configuration for Port, internal and external URL can be modified in dispatch.conf and cloudproxy.conf.
 
@@ -58,7 +58,7 @@ Edit `./priv/cloudproxy.conf`
 ```
 
 
-*Run:*
+**Run:**
 
 ```
 ./start.sh
