@@ -20,8 +20,8 @@ CloudProxy was developed and tested using Erlang R14B03.
 **Build:**
 
 ```
-git clone git://github.com/neuhausler/CloudRover.git
-cd CloudRover
+git clone git://github.com/neuhausler/CloudProxy.git
+cd CloudProxy
 make
 ```
 
