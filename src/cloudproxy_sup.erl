@@ -108,8 +108,8 @@ init([]) ->
 %% Utils
 
 get_option(Option, Options) ->
-	case lists:keytake(Option, 1, Options) of
+	case lists:keyfind(Option, 1, Options) of
 		false -> {ok, foo};
-		{value, {Option, Value}, _NewOptions} -> {ok, Value}
+		{Option, Value} -> {ok, Value}
 	end.
 

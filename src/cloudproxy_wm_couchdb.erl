@@ -23,7 +23,7 @@
 %%        http://localhost:8000/couch/DATABASE/KEY
 %%      to
 %%        http://localhost:5984/DATABASE/KEY
--module(cloudproxy_proxy_couchdb_resource).
+-module(cloudproxy_wm_couchdb).
 -export([init/1,
          service_available/2]).
 
@@ -60,9 +60,8 @@ service_available(RP, C={_ExternalPath, CouchPath}) ->
             %% stop resource processing here and return whatever
             %% couchdb wanted to return
             {{halt, list_to_integer(Status)},
-             wrq:set_resp_headers(RespHeaders,
-                                  wrq:set_resp_body(RespBody, RP)),
-             C};
+			wrq:set_resp_headers(RespHeaders,wrq:set_resp_body(RespBody, RP)),
+			C};
         _ ->
             {false, RP, C}
     end.

@@ -13,7 +13,7 @@
 %%    See the License for the specific language governing permissions and
 %%    limitations under the License.
 
--module(cloudproxy_proxy_tomcat_resource).
+-module(cloudproxy_wm_tomcat).
 
 -export([init/1, service_available/2]).
 
