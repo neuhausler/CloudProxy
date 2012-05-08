@@ -24,7 +24,6 @@ init(Config) ->
 	{ok, Config}.
 
 
-%% if CloudRover isn't up, we return 503 Service Unavailable, as expected
 service_available(RequestData, Context={mapping, MappingFile}) ->
 	{ok, Mapping}   = file:consult(filename:join([filename:dirname(code:which(?MODULE)), "..", MappingFile])),
 	{ok, Locations} = get_option(locations, Mapping),
@@ -34,18 +33,25 @@ service_available(RequestData, Context={mapping, MappingFile}) ->
 	{ok, Domain}   = dict:find(domain,   wrq:path_info(RequestData)),
 	{ok, Cmd}      = dict:find(cmd,      wrq:path_info(RequestData)),
 
-	{ok, BaseURL} = get_option(list_to_atom(Location), Locations),
-	{ok, CmdInfo} = get_option(list_to_atom(Domain ++ "." ++ Cmd), Cmds),
-	{ok, CmdURL}  = get_option(cmd, CmdInfo),
+	case list_to_atom(Location) of
+		all -> Destinations = Locations;
+		_OtherWise -> Destinations = [lists:keyfind(list_to_atom(Location), 1, Locations)]
+	end,
 
-	CloudRoverURL = BaseURL ++ "/sh" ++ CmdURL,
+	{ok, CmdInfo} = get_option(list_to_atom(Domain ++ "." ++ Cmd), Cmds),
+  	{ok, CmdURL}  = get_option(cmd, CmdInfo),
 	
-	case ibrowse:send_req(CloudRoverURL, [], get) of
-		{ok, Status, _RespHeaders, _RespBody} ->
-			{{halt, list_to_integer(Status)}, wrq:set_resp_headers([], wrq:set_resp_body("done", RequestData)), Context};
-		_Otherwise ->
-			{false, RequestData, Context}
-    end.
+	run_it(Locations, Destinations, CmdURL),
+	{{halt, 200}, wrq:set_resp_headers([], wrq:set_resp_body("done", RequestData)), Context}.
+
+
+run_it(_Locations, [], _CmdURL) ->
+	done;
+	
+run_it(Locations, [{_, BaseURL}|Tail], CmdURL) ->
+	CloudRoverURL = BaseURL ++ "/sh" ++ CmdURL,
+	ibrowse:send_req(CloudRoverURL, [], get),
+	run_it(Locations, Tail, CmdURL).
 
 
 %% Utils
@@ -55,3 +61,4 @@ get_option(Option, Options) ->
 		false -> {ok, foo};
 		{Option, Value} -> {ok, Value}
 	end.
+
